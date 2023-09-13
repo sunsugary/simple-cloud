@@ -1,7 +1,11 @@
 package com.iukme.simpleweb.common.export;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iukme.simpleweb.common.ResultCodeEnum;
+import com.iukme.simpleweb.common.exception.TmsServiceException;
+import com.iukme.simpleweb.common.utils.LoginUtil;
 import com.iukme.simpleweb.common.utils.Result;
+import com.iukme.simpleweb.common.vo.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,7 +26,7 @@ import java.util.Arrays;
 public class AsyncExcelExportService implements ExcelExportService {
 
     @Resource
-    private NewExportClient exportClient;
+    private ExportClient exportClient;
 
     @Override
     public Result<Integer> export(ExportModule module, ExportCondition dto) {
@@ -30,9 +34,8 @@ public class AsyncExcelExportService implements ExcelExportService {
         AsyncExportDTO exportDTO = createExportDTO(module, dto);
 
         log.info("导出任务请求入参：{}", JSONObject.toJSONString(exportDTO));
-        Result<Integer> result = exportClient.sendTask(exportDTO);
 
-        return Result.success(result.result());
+        return exportClient.sendTask(exportDTO);
     }
 
     /**
@@ -41,10 +44,10 @@ public class AsyncExcelExportService implements ExcelExportService {
      * @return
      */
     @Override
-    public Result selectTask(AsyncQueryExportDTO exportDTO) {
-        JwtUserDTO user = LoginUserUtils.getJwtUser();
-        exportDTO.setCreateBy(user.getId());
-        exportDTO.setCreateByName(user.getName());
+    public Result<AsyncExportTaskVO> selectTask(AsyncQueryExportDTO exportDTO) {
+        LoginUser loginUser = LoginUtil.loginUser();
+        exportDTO.setCreateBy(loginUser.getUserId());
+        exportDTO.setCreateByName(loginUser.getUserName());
         return exportClient.selectTask(exportDTO);
     }
 
@@ -58,17 +61,17 @@ public class AsyncExcelExportService implements ExcelExportService {
         }
         HttpServletRequest request = attr.getRequest();
 
-        UpsUser user = LoginUserUtils.getUpsUser();
+        LoginUser loginUser = LoginUtil.loginUser();
 
         AsyncExportDTO result = new AsyncExportDTO();
 
-        result.setTimezone(TmsWebUtils.getTimezone());
-        result.setLanguage(TmsWebUtils.getLanguage());
-        result.setUser(user);
+        result.setTimezone("");
+        result.setLanguage("");
+        result.setUser(loginUser);
         result.setModulePath(module.getModulePath());
         result.setUrl(request.getRequestURI());
         result.setTaskName(module.getTaskName());
-        result.setCondition(JSONUtil.toJsonStr(dto));
+        result.setCondition(JSONObject.toJSONString(dto));
         result.setSheets(Arrays.asList(module.getSheet()));
 
         return result;

@@ -1,6 +1,6 @@
 package com.iukme.simpleweb.common.export;
 
-import com.yl.tmsnew.api.dto.PageDTO;
+import com.iukme.simpleweb.common.dto.PageDTO;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,7 +25,7 @@ public class AsyncQueryExportDTO extends PageDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
 
-    private Integer createBy;
+    private Long createBy;
 
     private String createByName;
 

@@ -23,5 +23,5 @@ public interface ExcelExportService {
      * @param exportDTO
      * @return
      */
-    Result selectTask(AsyncQueryExportDTO exportDTO);
+    Result<AsyncExportTaskVO> selectTask(AsyncQueryExportDTO exportDTO);
 }

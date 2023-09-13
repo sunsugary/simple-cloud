@@ -1,6 +1,6 @@
 package com.iukme.simpleweb.common.export;
 
-import com.yl.jms.ups.dto.UpsUser;
+import com.iukme.simpleweb.common.vo.LoginUser;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -57,5 +57,5 @@ public class AsyncExportDTO implements Serializable {
     /**
      * 操作的用户
      */
-    private UpsUser user;
+    private LoginUser user;
 }

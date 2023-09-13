@@ -5,5 +5,9 @@ spring:
     name: simple-web
   cloud:
     nacos:
-      discovery:
+      config:
         server-addr: 101.35.245.166:8848
+
+
+
+

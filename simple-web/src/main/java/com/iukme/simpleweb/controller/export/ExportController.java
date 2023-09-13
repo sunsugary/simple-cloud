@@ -1,6 +1,7 @@
-package com.iukme.simpleweb.common.export;
+package com.iukme.simpleweb.controller.export;
 
 import com.alibaba.fastjson.JSON;
+import com.iukme.simpleweb.common.export.*;
 import com.iukme.simpleweb.common.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RequestMapping("/export")
 @RestController
-public class NewExportController {
+public class ExportController {
 
     @Resource
     private ExcelExportService excelExportService;
@@ -31,7 +32,7 @@ public class NewExportController {
 
 
     @PostMapping("/selectTask")
-    public Result selectTask(@RequestBody AsyncQueryExportDTO exportDTO) {
+    public Result<AsyncExportTaskVO> selectTask(@RequestBody AsyncQueryExportDTO exportDTO) {
         log.info("导出任务查询：{}", JSON.toJSONString(exportDTO));
         return excelExportService.selectTask(exportDTO);
     }

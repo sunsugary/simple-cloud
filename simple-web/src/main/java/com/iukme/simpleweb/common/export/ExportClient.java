@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @date 2023/5/8 10:52
  */
 @FeignClient(name = "tmsexportquery", path = "/tmsexportquery/async/export")
-public interface NewExportClient {
+public interface ExportClient {
 
     /**
      * 异步导入出
@@ -29,5 +29,5 @@ public interface NewExportClient {
      * @return 返回导出的任务
      */
     @PostMapping("/selectTask")
-    Result selectTask(@RequestBody AsyncQueryExportDTO exportDTO);
+    Result<AsyncExportTaskVO> selectTask(@RequestBody AsyncQueryExportDTO exportDTO);
 }
