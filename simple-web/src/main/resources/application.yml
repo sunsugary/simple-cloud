@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: simple-web
+  profiles:
+    active: dev
   cloud:
     nacos:
       discovery:
